@@ -1,0 +1,279 @@
+#:kivy 2.1.0
+
+#:import MDLabel kivymd.uix.label.MDLabel
+#:import MDTextField kivymd.uix.textfield.MDTextField
+#:import MDRaisedButton kivymd.uix.button.MDRaisedButton
+#:import MDFlatButton kivymd.uix.button.MDFlatButton
+#:import MDCard kivymd.uix.card.MDCard
+#:import MDScrollView kivymd.uix.scrollview.MDScrollView
+#:import MDSpinner kivymd.uix.spinner.MDSpinner
+#:import MDBoxLayout kivymd.uix.boxlayout.MDBoxLayout
+#:import MDSpinner kivymd.uix.spinner.MDSpinner
+
+<PhoneScreen>:
+    name: 'phone'
+    MDBoxLayout:
+        orientation: 'vertical'
+        spacing: 20
+        padding: 30
+
+        MDLabel:
+            text: "Laundry Service"
+            halign: "center"
+            font_style: "H4"
+            theme_text_color: "Primary"
+
+        MDTextField:
+            id: phone_input
+            hint_text: "Enter Phone Number (+8801XXXXXXXXX)"
+            helper_text: "Format: +8801XXXXXXXXX"
+            helper_text_mode: "on_focus"
+            icon_right: "phone"
+            mode: "rectangle"
+
+        MDBoxLayout:
+            spacing: 10
+            size_hint_y: None
+            height: "48dp"
+            pos_hint: {"center_x": .5}
+
+            MDRaisedButton:
+                id: start_button
+                text: "Start Order"
+                pos_hint: {"center_y": .5}
+                on_release: root.start_order()
+
+            MDRaisedButton:
+                id: history_button
+                text: "Service History"
+                pos_hint: {"center_y": .5}
+                md_bg_color: 0.8, 0.4, 0.2, 1
+                on_release: root.go_to_history()
+
+        MDLabel:
+            text: "Recent Orders:"
+            font_style: "H6"
+            theme_text_color: "Secondary"
+            size_hint_y: None
+            height: "40dp"
+
+        MDScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+            size_hint_y: 1
+
+            GridLayout:
+                id: history_layout
+                cols: 1
+                spacing: 5
+                size_hint_y: None
+                height: self.minimum_height
+                padding: 5
+
+
+<ItemsScreen>:
+    name: 'items'
+    MDBoxLayout:
+        orientation: 'vertical'
+        spacing: 15
+        padding: 20
+
+        MDLabel:
+            text: "Add Laundry Items"
+            halign: "center"
+            font_style: "H5"
+            theme_text_color: "Primary"
+            size_hint_y: None
+            height: "40dp"
+
+        MDGridLayout:
+            cols: 2
+            spacing: 10
+            padding: [0, 10, 0, 10]
+            size_hint_y: None
+            height: self.minimum_height
+
+            MDLabel:
+                text: "Item Name:"
+                halign: "right"
+                size_hint_y: None
+                height: "48dp"
+                size_hint_x: 0.3
+                pos_hint: {"center_y": 0.5}
+
+            Spinner:
+                id: item_name
+                text: "Select Item"
+                values: ["Shirt", "Pants", "T-Shirt", "Polo", "Sweater", "Jacket", "Suits", "Sari", "Other"]
+                size_hint_x: 0.7
+                size_hint_y: None
+                height: "48dp"
+
+            MDLabel:
+                text: "Quantity:"
+                halign: "right"
+                size_hint_y: None
+                height: "48dp"
+                size_hint_x: 0.3
+                pos_hint: {"center_y": 0.5}
+
+            MDTextField:
+                id: quantity
+                hint_text: "Quantity"
+                mode: "rectangle"
+                input_filter: "int"
+                icon_right: "counter"
+                size_hint_x: 0.7
+                size_hint_y: None
+                height: "48dp"
+
+            MDLabel:
+                text: "Service Type:"
+                halign: "right"
+                size_hint_y: None
+                height: "48dp"
+                size_hint_x: 0.3
+                pos_hint: {"center_y": 0.5}
+
+            Spinner:
+                id: service_type
+                text: "Select Service"
+                values: ["Wash", "Iron", "Dry Clean", "Wash & Iron"]
+                size_hint_x: 0.7
+                size_hint_y: None
+                height: "48dp"
+                
+            MDLabel:
+                text: "Rate (Tk):"
+                halign: "right"
+                size_hint_y: None
+                height: "48dp"
+                size_hint_x: 0.3
+                pos_hint: {"center_y": 0.5}
+                
+            MDTextField:
+                id: rate
+                hint_text: "Rate (Tk)"
+                mode: "rectangle"
+                input_filter: "float"
+                icon_right: "currency-bdt"
+                size_hint_x: 0.7
+                size_hint_y: None
+                height: "48dp"
+
+        MDRaisedButton:
+            text: "Add Item"
+            md_bg_color: app.theme_cls.primary_color
+            pos_hint: {"center_x": .5}
+            size_hint_y: None
+            height: "48dp"
+            on_release: root.add_item(self)
+
+        MDLabel:
+            id: total_label
+            text: "Total: Tk 0.00"
+            halign: "center"
+            theme_text_color: "Secondary"
+            bold: True
+            size_hint_y: None
+            height: "40dp"
+
+        MDLabel:
+            text: "Items Added:"
+            halign: "left"
+            theme_text_color: "Primary"
+            font_style: "Subtitle1"
+            size_hint_y: None
+            height: "30dp"
+
+        MDScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+            effect_cls: "ScrollEffect"
+            
+            MDBoxLayout:
+                id: item_box
+                orientation: 'vertical'
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: 10
+                padding: 5
+
+        MDBoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: "60dp"
+            spacing: 20
+            padding: [10, 10, 10, 10]
+            md_bg_color: 0.95, 0.95, 0.95, 1
+
+            MDRaisedButton:
+                text: "Back"
+                md_bg_color: 0.8, 0.2, 0.2, 1
+                size_hint_x: 0.5
+                on_release: root.go_back(self)
+
+            MDRaisedButton:
+                text: "Proceed"
+                md_bg_color: 0.2, 0.8, 0.2, 1
+                size_hint_x: 0.5
+                on_release: root.proceed(self)
+
+
+<ReceiptScreen>:
+    name: 'receipt'
+    MDBoxLayout:
+        orientation: 'vertical'
+        spacing: 20
+        padding: 25
+
+        MDLabel:
+            text: "Receipt Summary"
+            halign: "center"
+            font_style: "H5"
+            theme_text_color: "Primary"
+
+        ScrollView:
+            MDLabel:
+                id: receipt_label
+                text: "No data yet."
+                halign: "center"
+                theme_text_color: "Secondary"
+                size_hint_y: None
+                height: self.texture_size[1]
+
+        MDRaisedButton:
+            text: "Print Receipt"
+            md_bg_color: app.theme_cls.primary_color
+            pos_hint: {"center_x": .5}
+            on_release: root.generate_pdf()
+
+        MDFlatButton:
+            text: "Back"
+            on_release: app.root.current = 'items'
+
+
+<CustomersScreen>:
+    name: 'customers'
+    MDBoxLayout:
+        orientation: 'vertical'
+        padding: 20
+        spacing: 10
+
+        MDLabel:
+            text: "All Customers"
+            halign: "center"
+            font_style: "H5"
+
+        ScrollView:
+            MDBoxLayout:
+                id: customer_box
+                orientation: 'vertical'
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: 8
+
+        MDFlatButton:
+            text: "Back"
+            pos_hint: {"center_x": .5}
+            on_release: app.root.current = 'phone'
